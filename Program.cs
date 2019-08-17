@@ -8,7 +8,7 @@ namespace Derivada_Numerica
 {
     class Program
     {
-        public static List<String> fatores;
+        public static List<String> fatores = new List<string>();
         public static int [] inParentPosi; //array para capturar as posicoes onde ocorre a abertura dos parenteses
         public static int[] fimParentPosi; //array para capturar as posicoes onde ocorre o fechamento dos parenteses
 
@@ -34,10 +34,14 @@ namespace Derivada_Numerica
 
         static void organizaConta(String mensagem)
         {
+            String aux;
+           
+            bool firstscan = false;
             int c1,c2;
             c1 = 0;
             c2 = 0;
-         
+            
+           
 
            //função para encontrar todos os parenteses e salvar suas posições
 
@@ -57,13 +61,43 @@ namespace Derivada_Numerica
 
             }
             c1 = 0;
+
             //TESTE EXIBIR AS STRINGS CORTADAS
             for(int i = (inParentPosi.Length - 1); i>=0;i--)
             {
-                Console.WriteLine("{0}", mensagem.Substring(inParentPosi[i], (fimParentPosi[c1]) - inParentPosi[i]));
+
+                if(!firstscan)
+                {
+
+                    fatores.Add(mensagem.Substring(inParentPosi[i], ((fimParentPosi[c1]) - inParentPosi[i]) + 1));
+
+                    //Console.WriteLine("{0}", mensagem.Substring(inParentPosi[i], ((fimParentPosi[c1]) - inParentPosi[i]) + 1));
+                    firstscan = true;
+                }
+                else
+                {
+                    //Console.WriteLine("{0}", mensagem.Substring(fimParentPosi[c1-1], ((fimParentPosi[c1]) - fimParentPosi[c1 - 1]) + 1));
+                    aux = mensagem.Substring(fimParentPosi[c1 - 1], ((fimParentPosi[c1]) - fimParentPosi[c1 - 1]) + 1);
+
+                   
+                    if (aux[0] == ')')
+                    {
+                       aux = "(" + aux.Remove(0,1);
+                        
+                    }
+                  
+                    fatores.Add(aux);
+     
+                }
+
                 c1++;
             }
-   
+            
+            for(int i = 0; i <fatores.Count;i++)
+            {
+               
+                Console.WriteLine("{0}", fatores[i]);
+            }
 
         }
 
