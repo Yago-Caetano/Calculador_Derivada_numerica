@@ -8,9 +8,12 @@ namespace Derivada_Numerica
 {
     class Program
     {
+        
         public static List<String> fatores = new List<string>();
         public static int [] inParentPosi; //array para capturar as posicoes onde ocorre a abertura dos parenteses
         public static int[] fimParentPosi; //array para capturar as posicoes onde ocorre o fechamento dos parenteses
+        public static List<String> termos = new List<string>(); //armazena os termos
+
 
         static void Main(string[] args)
         {
@@ -19,19 +22,28 @@ namespace Derivada_Numerica
             Console.WriteLine("Insira a String");
             funcao = Console.ReadLine();
 
-            if(VerificaString(funcao))
-            {
-                Console.WriteLine("String Correta");
-                organizaConta(funcao);
+               if(VerificaString(funcao))
+               {
+                   Console.WriteLine("String Correta");
+                // organizaConta(funcao);
+                SeparaTermos(funcao);
+                organizaConta(termos[0]);
             }
-            else
-            {
-                Console.WriteLine("String Incorreta");
-            }
+               else
+               {
+                   Console.WriteLine("String Incorreta");
+               }
+              
+            
 
             Console.ReadKey();
         }
 
+        /// <summary>
+        /// Recebe um termo gráfica  as operações na lista funções
+        /// </summary>
+        /// <param name="mensagem"></param>
+        /// 
         static void organizaConta(String mensagem)
         {
             String aux;
@@ -101,6 +113,12 @@ namespace Derivada_Numerica
 
         }
 
+        /// <summary>
+        /// Método reposável por verificar se a String obtida pela interface gráfica está correta 
+        /// Retorna verdadeiro se a mensagem estiver de acordo
+        /// </summary>
+        /// <param name="mensagem"></param>
+        /// <returns></returns>
         static bool VerificaString(String mensagem)
         {
             //verificação do número de parenteses
@@ -137,6 +155,50 @@ namespace Derivada_Numerica
 
 
         }
+
+
+        static void SeparaTermos(String mensagem)
+        {
+            //encontra os termos e faz a substring
+            int inicio, fim,count;
+            count = 0;
+            inicio = 0;
+            fim = 0;
+            while(mensagem.Contains("[") && (mensagem.Contains("]")))
+            {
+                foreach (char c in mensagem)
+                {
+
+                    if (c == '[')
+                    {
+                        inicio = count;
+                    }
+                    else if (c == ']')
+                    {
+                        fim = count;
+                        count = 0;
+                        break;
+                    }
+
+                    count++;
+                }
+
+                termos.Add(mensagem.Substring(inicio, (fim - inicio)+1)); //adciona o termo na lista
+                mensagem = mensagem.Substring(fim+1); //retira da string o termo adicionado na lista
+
+            }
+
+         /*   for(int i=0; i<termos.Count;i++)
+            {
+                Console.WriteLine("{0}", termos[i]);
+            
+            }*/
+        }
+
+        
+
     }
+
+    
    
 }
